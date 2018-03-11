@@ -21,12 +21,12 @@
  * Pagination
  * Reverse Layout
  * Footer
- */
+*/
 
 * {
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 html,
@@ -37,7 +37,7 @@ body {
 }
 
 html {
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
@@ -48,10 +48,10 @@ html {
 }
 
 body {
-  color: #d6dbdf;
-  background-color: #444444;
+  color: #fff;
+  background-color: #000;
   -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
 }
 
 /* No `:visited` state is required by default (browsers will use `a`) */
@@ -74,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   color: #25BFBF;
   letter-spacing: -.025rem;
-}
+} 
 
 h1 {
   font-size: 2rem;
@@ -136,32 +136,35 @@ abbr[title] {
   border-bottom: 1px dotted #6DD;
 }
 
-/*
+/* 
  * Code and Highlight
- *
+ * 
  * Code and higlight theme */
 
-/* code, */
+code,
+pre {
+  font-family: Menlo, Monaco, "Courier New", monospace;
+}
 code {
   padding: .25em .5em;
-  /* font-size: %; */
+  font-size: 85%;
   color: #000;
-  background-color: #0CDADA;
-  /* border-radius: 3px; */
+  background-color: #0CDADA;;
+  border-radius: 3px;
 }
 pre {
   display: block;
   margin-top: 0;
   margin-bottom: 1rem;
   padding: 1rem;
-  /* font-size: .8rem; */
+  font-size: .8rem;
   line-height: 1.4;
   white-space: pre;
   white-space: pre-wrap;
   word-break: break-all;
   word-wrap: break-word;
-  background-color: #333333;
-  /* border: 1px solid #6DD; */
+  background-color: #000;
+  border: 1px solid #6DD;
 }
 pre code {
   padding: 0;
@@ -178,7 +181,7 @@ pre code {
 }
 .highlight pre {
   margin-bottom: 0;
-  background-color: #000;
+  background-color: #000; 
 }
 
 /* Gist via GitHub Pages */
@@ -227,41 +230,8 @@ img {
   border-radius: 5px;
 }
 
-
-/* tag_box ======================================================== */
-
-.tag-box {
-  list-style:none;
-  margin:0;
-  padding:5px 0 ;
-  overflow:hidden;
-}
-.tag-box li {
-  line-height:28px;
-}
-.tag-box.inline li {
-  float:left;
-}
-.tag-box a {
-  padding: 3px 6px;
-  margin: 2px;
-  background: #000;
-  color:#005F6B;
-  border-radius: 3px;
-  text-decoration:none;
-}
-.tag-box a span{
-  vertical-align:super;
-  font-size:0.8em;
-}
-.tag-box a.active {
-  background:#57A957;
-  border:1px solid #4C964D;
-  color:#FFF;
-}
-
-/*
- * Tables
+/* 
+ * Tables 
  *
  * Hacker style tables */
 table {
@@ -277,7 +247,7 @@ th {
 }
 tbody tr:nth-child(odd) td,
 tbody tr:nth-child(odd) th {
-  /* background-color: #000; */
+  background-color: #000;
 }
 
 /*
@@ -377,12 +347,13 @@ tbody tr:nth-child(odd) th {
   width: 14rem;
   visibility: hidden;
   overflow-y: auto;
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
   font-size: .875rem; /* 15px */
   color: rgba(255,255,255,.6);
   border: 1px solid #6DD;
   background-color: #202020;
   -webkit-transition: all .3s ease-in-out;
-  transition: all .3s ease-in-out;
+          transition: all .3s ease-in-out;
 }
 @media (min-width: 30em) {
   .sidebar {
@@ -415,7 +386,7 @@ tbody tr:nth-child(odd) th {
 a.sidebar-nav-item:hover,
 a.sidebar-nav-item:focus {
   text-decoration: none;
-  /* background-color: #191E1E; */
+  background-color: #191E1E;
   border-color: #6DD;
 }
 
@@ -443,7 +414,7 @@ a.sidebar-nav-item:focus {
   width: 2.2rem;
   padding: .5rem .65rem;
   color: #6DD;
-  /* background-color: #000; */
+  background-color: #000;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -457,8 +428,8 @@ a.sidebar-nav-item:focus {
 
   /* Make the border inside the box */
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .sidebar-toggle:active,
@@ -497,13 +468,13 @@ a.sidebar-nav-item:focus {
 .sidebar,
 .sidebar-toggle {
   -webkit-backface-visibility: hidden;
-  -ms-backface-visibility: hidden;
-  backface-visibility: hidden;
+      -ms-backface-visibility: hidden;
+          backface-visibility: hidden;
 }
 .wrap,
 .sidebar-toggle {
   -webkit-transition: -webkit-transform .3s ease-in-out;
-  transition: transform .3s ease-in-out;
+          transition: transform .3s ease-in-out;
 }
 
 #sidebar-checkbox:checked + .sidebar {
@@ -514,8 +485,8 @@ a.sidebar-nav-item:focus {
 #sidebar-checkbox:checked ~ .wrap,
 #sidebar-checkbox:checked ~ .sidebar-toggle {
   -webkit-transform: translateX(14rem);
-  -ms-transform: translateX(14rem);
-  transform: translateX(14rem);
+      -ms-transform: translateX(14rem);
+          transform: translateX(14rem);
 }
 
 
@@ -576,11 +547,11 @@ a.sidebar-nav-item:focus {
   color: #9a9a9a;
 }
 
-/*
- * Related posts
- *
+/* 
+ * Related posts 
+ * 
  * Related post in the bottom of post
- */
+*/
 .related {
   /*padding-top: 2rem;*/
   /*padding-bottom: 2rem;*/
@@ -669,7 +640,7 @@ a.pagination-item:hover {
 .theme-6dd .sidebar,
 .theme-6dd .sidebar-toggle:active,
 .theme-6dd #sidebar-checkbox:checked ~ .sidebar-toggle {
-  /* background-color: #000; */
+  background-color: #000;
 }
 .theme-6dd .container a,
 .theme-6dd .sidebar-toggle,
@@ -698,18 +669,18 @@ a.pagination-item:hover {
 .layout-reverse #sidebar-checkbox:checked ~ .wrap,
 .layout-reverse #sidebar-checkbox:checked ~ .sidebar-toggle {
   -webkit-transform: translateX(-14rem);
-  -ms-transform: translateX(-14rem);
-  transform: translateX(-14rem);
+      -ms-transform: translateX(-14rem);
+          transform: translateX(-14rem);
 }
 
 /*
  * Footer
- *
+ * 
  * Footer configuration class
  */
 
 .footer {
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 10px; 
   border-top: 1px solid #6DD;
 }
