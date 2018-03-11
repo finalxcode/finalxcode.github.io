@@ -8,7 +8,7 @@ gems: [jekyll-paginate]
 # Permalinks
 #
 # Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           none
+permalink:           /:title.html
 
 # Setup
 title:               Stardust's Blog
