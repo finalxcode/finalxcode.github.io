@@ -3,7 +3,9 @@ markdown:            kramdown
 highlighter:         rouge
 
 # Gems (for Jekyll 3.0)
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
+  #- jekyll-admin
+
 
 # Permalinks
 #
@@ -12,7 +14,7 @@ permalink:           /:title.html
 
 # Setup
 title:               Stardust's Blog
-tagline:             'A Hacker like jekyll theme'
+tagline:             '野马也，尘埃也，生物之以息相吹也~'
 description:         '计算机科学|程序设计|创业者'
 url:                 https://gitlab.com/finalxcode
 baseurl:             /
@@ -33,7 +35,7 @@ twitter:			https://gitlab.com/finalxcode
 disqus:             finalxcode
 
 # Theme Author (Please don't edit this line cause of MIT LICENSE rules)
-theme:
-  creator:			Rizky Ariestiyansyah
-  codename:			Naringu
-  link:         https://github.com/ariestiyansyah/naringu
+#theme:
+#  creator:			Rizky Ariestiyansyah
+#  codename:			Naringu
+#  link:         https://github.com/ariestiyansyah/naringu
