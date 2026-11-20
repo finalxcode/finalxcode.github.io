@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>副业实验周报生成器：把每天的数字变成一份能复盘的周报 - 副业实验账本</title>
+<meta name="description" content="填入每天的时间投入、现金支出和收入，自动算出本周净额、各实验占比和时薪，生成可复制的周报。只做算术，不预测收益。数据存在你自己浏览器里。">
+<meta property="og:title" content="副业实验周报生成器">
+<meta property="og:description" content="每天记三行数字，周末自动变成一份能复盘的周报：净额、各实验占比、时薪、该砍掉哪个实验。">
+<style>
+.cta{margin:2rem 0 1rem;padding:1.25rem;border:1px solid #dbe4e2;border-radius:12px;background:#f7fbfa}
+.cta h2{font-size:1.02rem;margin:0 0 .5rem}
+.cta p{margin:.35rem 0;font-size:.94rem;color:#37474f}
+.cta .btn{display:inline-block;margin-top:.6rem;padding:.5rem 1rem;border-radius:8px;background:#0a7d6b;color:#fff;text-decoration:none;font-size:.92rem}
+</style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="../" data-site-name>副业实验账本</a><nav class="nav"><a href="../adlaw-checker/">违禁词检测</a><a href="../fee-calculator/">到账计算器</a></nav></div></header>
+<main class="wrap">
+  <h1>副业实验周报生成器</h1>
+  <p class="lead">每天只记三行数字：投入多少分钟、花了多少现金、到账多少。周末点一下，变成一份能复盘的周报。只做算术，不预测你能赚多少；数据存在你自己的浏览器里，不上传。</p>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 6px">1. 填这一周</h2>
+    <p class="muted" style="margin:0 0 8px">收入和支出都填<b>实际到账/实际付出去</b>的钱。没到账的意向不要算收入。练习周收入填 0 是正常的。</p>
+    <table class="sheet">
+      <thead><tr><th style="width:110px">日期</th><th>实验标签</th><th style="width:96px">投入(分钟)</th><th style="width:96px">支出(元)</th><th style="width:96px">收入(元)</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="row">
+      <button id="btn-add">+ 加一行</button>
+      <button id="btn-week">填本周日期</button>
+      <button id="btn-clear">清空</button>
+    </div>
+    <div class="sum" id="sum"></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 6px">2. 这周发生了什么（选填）</h2>
+    <p class="muted" style="margin:0 0 8px">一行一件。写事实，不写感想：「发了 3 篇，最高阅读 240」「闲鱼下架 1 次，原因是标题」。</p>
+    <textarea id="notes" placeholder="例：&#10;11-17 发了第 3 篇，阅读 240&#10;11-18 闲鱼虚拟资料被下架，原因是「涉及虚拟商品」&#10;11-19 试了新的选题方法，花了 40 分钟没有产出"></textarea>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 10px">3. 周报</h2>
+    <div class="row" style="margin-top:0">
+      <button class="primary" id="btn-gen">生成周报</button>
+      <button id="btn-copy">复制</button>
+      <button id="btn-md">下载 .md</button>
+      <button id="btn-csv">下载 .csv</button>
+    </div>
+    <p class="muted" id="hint" style="margin:10px 0 0"></p>
+    <pre class="out" id="out" style="display:none"></pre>
+  </div>
+
+  <section class="cta">
+    <h2>周报只是记录，判断才是钱</h2>
+    <p>生成出来的结论告诉你哪件事在吃时间、哪件在赚钱。但「下周该砍谁、该加码谁」通常需要看过十几份这样的周报。</p>
+    <p>我在知识星球里持续更新这套账本方法、每周实测数据和可直接抄的模板。站内不放价格，加入方式以星球页面为准。</p>
+    <a class="btn" href="https://t.zsxq.com/Wl8c8" rel="noopener">了解知识星球 →</a>
+  </section>
+
+  <p class="muted">说明：本工具只做加减法，不做收益预测，也不联网。清空浏览器数据会一起清掉记录，重要周报请下载保存。</p>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js"></script>
+<script src="report-core.js"></script>
+<script src="app.js"></script>
+<script>SiteFooter.render();</script>
+</body>
+</html>
