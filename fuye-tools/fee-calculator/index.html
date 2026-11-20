@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>副业平台到账计算器：知识星球/闲鱼/小红书/抖音手续费怎么算 - 副业实验账本</title>
+<meta name="description" content="免费计算知识星球、闲鱼、小红书店铺、抖音小店、公众号流量主与赞赏、微信支付的手续费和预计到账金额。每项费率都标注来源与核实日期，可自行修改。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="/" data-site-name>副业实验账本</a><nav class="nav"><a href="../adlaw-checker/">违禁词检测</a></nav></div></header>
+<main class="wrap">
+  <h1>副业平台到账计算器</h1>
+  <p class="lead">输入价格和单量，算出平台手续费和预计到账金额。每个费率都标注了来源和核实日期；未能核实的费率不给默认值，请按你的后台填写。修改后的费率保存在本机浏览器。</p>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="card">
+    <p class="muted" id="pdesc" style="margin-top:0"></p>
+    <h2 style="font-size:16px;margin:4px 0 8px">1. 填写交易数据</h2>
+    <div class="grid" id="inputs"></div>
+    <h2 style="font-size:16px;margin:18px 0 8px">2. 核对费率（可修改）</h2>
+    <div class="grid" id="rates"></div>
+    <div class="row"><button id="btn-reset">恢复本平台默认费率</button></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 8px">3. 计算结果</h2>
+    <div id="out"></div>
+  </div>
+
+  <div class="notice">本工具结果仅为估算，不含个人所得税等税费，不构成财务或税务建议。平台费率随时可能调整，请以平台后台和官方公告为准。费率核实日期：<span id="checked"></span>。</div>
+
+  <div class="card" style="margin-top:16px">
+    <h2 style="font-size:16px;margin:0 0 8px">费率来源一览</h2>
+    <div id="sources" style="overflow-x:auto"></div>
+  </div>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js"></script>
+<script src="rates.js"></script>
+<script src="fee-core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
