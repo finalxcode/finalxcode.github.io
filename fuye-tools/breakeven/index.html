@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>副业盈亏平衡计算器：开工前算清要卖多少单才回本 - 副业实验账本</title>
+<meta name="description" content="做副业前先算账：输入客单价、单笔成本、一次性投入和耗时，自动算出要卖多少单才回本、真实时薪和回本需要几周。纯算术，不预测收益，浏览器本地运行。">
+<meta property="og:title" content="副业盈亏平衡计算器">
+<meta property="og:description" content="开工前算清：回本要卖几单、真实时薪多少、要干几周。只做算术，不预测收益。">
+<style>
+.cta{margin:2rem 0 1rem;padding:1.25rem;border:1px solid #dbe4e2;border-radius:12px;background:#f7fbfa}
+.cta h2{font-size:1.02rem;margin:0 0 .5rem}
+.cta p{margin:.35rem 0;font-size:.94rem;color:#37474f}
+.cta .btn{display:inline-block;margin-top:.6rem;padding:.5rem 1rem;border-radius:8px;background:#0a7d6b;color:#fff;text-decoration:none;font-size:.92rem}
+.headline{display:flex;flex-direction:column;gap:2px;margin:2px 0 14px}
+.headline .big{color:var(--brand)}
+.kvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 20px}
+.kv{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dotted var(--line);padding:6px 0;font-size:14px}
+.kv b{font-variant-numeric:tabular-nums}
+.kv b.pos{color:var(--ok)}.kv b.neg{color:var(--high)}
+.notes{margin:14px 0 0;padding-left:20px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+.field .hint{font-size:12px;color:var(--muted);margin-top:3px}
+</style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="../" data-site-name>副业实验账本</a><nav class="nav"><a href="../adlaw-checker/">违禁词检测</a><a href="../fee-calculator/">到账计算器</a><a href="../weekly-report/">周报生成器</a></nav></div></header>
+<main class="wrap">
+  <h1>副业盈亏平衡计算器</h1>
+  <p class="lead">开工前先算一笔账：这个生意要做多少单才回本、每单真正赚多少、按你每周能投入的时间要干几周。只做算术，不预测你能不能卖出去——那件事只能你自己去试。数据只存在你的浏览器里，不上传。</p>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 10px">1. 填你的数字</h2>
+    <div class="fields">
+      <div class="field"><label for="label">项目名（选填）</label><input type="text" id="label" placeholder="例：闲鱼卖模板"></div>
+      <div class="field"><label for="price">客单价（元）</label><input type="number" min="0" step="0.01" id="price" placeholder="例：39.9"><div class="hint">一单实际收多少钱</div></div>
+      <div class="field"><label for="variableCost">单笔可变成本（元）</label><input type="number" min="0" step="0.01" id="variableCost" placeholder="例：12"><div class="hint">材料、平台费、运费、交付成本；卖一单才发生一次</div></div>
+      <div class="field"><label for="fixedCost">一次性固定投入（元）</label><input type="number" min="0" step="0.01" id="fixedCost" placeholder="例：800"><div class="hint">工具、设备、推广等无论卖多少都要花的钱</div></div>
+      <div class="field"><label for="targetProfit">目标利润（元，选填）</label><input type="number" min="0" step="0.01" id="targetProfit" placeholder="例：1000"><div class="hint">想在回本之外再多赚多少</div></div>
+      <div class="field"><label for="minutes">每单耗时（分钟，选填）</label><input type="number" min="0" step="1" id="minutes" placeholder="例：25"><div class="hint">从接单到交付，你实际花的时间</div></div>
+      <div class="field"><label for="weeklyMinutes">每周可投入（分钟，选填）</label><input type="number" min="0" step="1" id="weeklyMinutes" placeholder="例：300"><div class="hint">填了才能估算「几周回本」</div></div>
+    </div>
+    <div class="row">
+      <button id="btn-demo">填个例子</button>
+      <button id="btn-clear">清空</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 6px">2. 算出来的账</h2>
+    <div id="result"><p class="muted">填上客单价就开始算了。</p></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 10px">3. 存下这份测算</h2>
+    <div class="row" style="margin-top:0">
+      <button class="primary" id="btn-gen">生成报告</button>
+      <button id="btn-copy">复制</button>
+      <button id="btn-md">下载 .md</button>
+    </div>
+    <p class="muted" id="hint" style="margin:10px 0 0"></p>
+    <pre class="out" id="out" style="display:none"></pre>
+  </div>
+
+  <section class="cta">
+    <h2>算完才发现不对劲？这才是工具的价值</h2>
+    <p>很多人做到一半才发现「每单其实不赚钱」或者「要卖几千单才回本」。开工前 2 分钟算清这笔账，比埋头干一个月更省钱。</p>
+    <p>算出来觉得能做，但不确定第一步怎么验证？我在知识星球里持续更新这套账本方法、每周实测数据和可直接抄的模板。站内不放价格，加入方式以星球页面为准。</p>
+    <a class="btn" href="https://t.zsxq.com/Wl8c8" rel="noopener">了解知识星球 →</a>
+  </section>
+
+  <p class="muted">说明：本工具只做加减乘除，不预测收益、不承诺结果。平台手续费、退款与税费请折算进「单笔可变成本」。清空浏览器数据会一起清掉输入。</p>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js"></script>
+<script src="breakeven-core.js"></script>
+<script src="app.js"></script>
+<script>SiteFooter.render();</script>
+</body>
+</html>
