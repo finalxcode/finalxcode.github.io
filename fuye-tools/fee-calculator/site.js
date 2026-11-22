@@ -14,7 +14,7 @@
       if (!el) return;
       var icp = SITE.icp
         ? '<a href="' + SITE.icpUrl + '" target="_blank" rel="noopener">' + SITE.icp + "</a>"
-        : '<span class="muted">本工具在浏览器本地运行，不上传、不保存你的文案</span>';
+        : '<span class="muted">ICP备案号：备案通过后填写</span>';
       el.innerHTML = '<p>© ' + SITE.year + ' <a href="' + SITE.homeUrl + '">' + SITE.name + "</a> · 免费工具，仅供参考</p><p>" + icp + "</p>";
       var brand = document.querySelectorAll("[data-site-name]");
       Array.prototype.forEach.call(brand, function (b) { b.textContent = SITE.name; });

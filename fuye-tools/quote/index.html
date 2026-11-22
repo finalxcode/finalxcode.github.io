@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>接单报价计算器：自由职业/副业接单怎么报价不亏 - 副业实验账本</title>
+<meta name="description" content="接单不知道怎么报价？输入工时、期望时薪、修改轮次、平台抽成，自动算出建议报价、最低接单价、定金和超出修改费，并判断客户预算能不能接。纯算术，浏览器本地运行。">
+<meta property="og:title" content="接单报价计算器">
+<meta property="og:description" content="把沟通、修改、平台抽成和税都算进去：建议报价、最低接单价、客户预算能不能接。">
+<style>
+.cta{margin:2rem 0 1rem;padding:1.25rem;border:1px solid #dbe4e2;border-radius:12px;background:#f7fbfa}
+.cta h2{font-size:1.02rem;margin:0 0 .5rem}
+.cta p{margin:.35rem 0;font-size:.94rem;color:#37474f}
+.cta .btn{display:inline-block;margin-top:.6rem;padding:.5rem 1rem;border-radius:8px;background:#0a7d6b;color:#fff;text-decoration:none;font-size:.92rem}
+.headline{display:flex;flex-direction:column;gap:2px;margin:2px 0 14px}
+.headline .big{color:var(--brand)}
+.kvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 20px}
+.kv{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dotted var(--line);padding:6px 0;font-size:14px}
+.kv b{font-variant-numeric:tabular-nums}
+.kv b.pos{color:var(--ok)}.kv b.neg{color:var(--high)}
+.notes{margin:14px 0 0;padding-left:20px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+.field .hint{font-size:12px;color:var(--muted);margin-top:3px}
+</style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="../" data-site-name>副业实验账本</a><nav class="nav"><a href="../adlaw-checker/">违禁词检测</a><a href="../fee-calculator/">到账计算器</a><a href="../weekly-report/">周报生成器</a><a href="../breakeven/">盈亏平衡</a></nav></div></header>
+<main class="wrap">
+  <h1>接单报价计算器</h1>
+  <p class="lead">接单报价最常见的亏法，是只按"做的时间"报价，忘了沟通、修改、平台抽成和税。这个工具把它们全算进去，给你一个建议报价和一条不能再低的底线。只做算术，不预测客户接不接受。数据只存在你的浏览器里，不上传。</p>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 10px">1. 填你的数字</h2>
+    <div class="fields">
+      <div class="field"><label for="label">项目名（选填）</label><input type="text" min="0" step="0.01" id="label" placeholder="例：公众号排版代做"></div>
+      <div class="field"><label for="hours">预计制作工时（小时）</label><input type="number" min="0" step="0.01" id="hours" placeholder="例：6"><div class="hint">只算真正动手做的时间</div></div>
+      <div class="field"><label for="rate">期望时薪（元）</label><input type="number" min="0" step="0.01" id="rate" placeholder="例：80"><div class="hint">你希望一小时值多少</div></div>
+      <div class="field"><label for="minRate">最低可接受时薪（元，选填）</label><input type="number" min="0" step="0.01" id="minRate" placeholder="例：50"><div class="hint">用来算底价；不填等于期望时薪</div></div>
+      <div class="field"><label for="commPct">沟通时间占比（%）</label><input type="number" min="0" step="0.01" id="commPct" placeholder="默认 20"><div class="hint">需求确认、来回消息、开会</div></div>
+      <div class="field"><label for="revisions">包含修改轮次</label><input type="number" min="0" step="1" id="revisions" placeholder="例：2"><div class="hint">报价里承诺的免费修改次数</div></div>
+      <div class="field"><label for="revisionHours">每轮修改耗时（小时）</label><input type="number" min="0" step="0.01" id="revisionHours" placeholder="例：1"></div>
+      <div class="field"><label for="directCost">直接成本（元）</label><input type="number" min="0" step="0.01" id="directCost" placeholder="例：30"><div class="hint">素材、字体、软件、外包费</div></div>
+      <div class="field"><label for="feePct">平台抽成（%）</label><input type="number" min="0" step="0.01" id="feePct" placeholder="例：0"><div class="hint">走平台接单时填，如闲鱼、猪八戒</div></div>
+      <div class="field"><label for="taxPct">税费（%，选填）</label><input type="number" min="0" step="0.01" id="taxPct" placeholder="例：0"><div class="hint">需要开票或代扣时填</div></div>
+      <div class="field"><label for="bufferPct">风险缓冲（%）</label><input type="number" min="0" step="0.01" id="bufferPct" placeholder="默认 15"><div class="hint">需求变更、返工、拖款</div></div>
+      <div class="field"><label for="depositPct">定金比例（%）</label><input type="number" min="0" step="0.01" id="depositPct" placeholder="默认 50"></div>
+      <div class="field"><label for="budget">客户预算（元，选填）</label><input type="number" min="0" step="0.01" id="budget" placeholder="例：600"><div class="hint">填了会判断能不能接</div></div>
+    </div>
+    <div class="row">
+      <button id="btn-demo">填个例子</button>
+      <button id="btn-clear">清空</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 6px">2. 算出来的账</h2>
+    <div id="result"><p class="muted">填上工时和时薪就开始算了。</p></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 10px">3. 存下这份报价</h2>
+    <div class="row" style="margin-top:0">
+      <button class="primary" id="btn-gen">生成报告</button>
+      <button id="btn-copy">复制</button>
+      <button id="btn-md">下载 .md</button>
+    </div>
+    <p class="muted" id="hint" style="margin:10px 0 0"></p>
+    <pre class="out" id="out" style="display:none"></pre>
+  </div>
+
+  <section class="cta">
+    <h2>价格算出来了，客户还是砍价？</h2>
+    <p>报价单怎么写才不被无限改、预算不够时用什么话术砍范围、第一单从哪里接——这些我在知识星球里用真实接单记录持续更新，还附可直接抄的报价单模板。</p>
+    <p>想让我帮你把一个具体的接单项目过一遍定价，也可以在星球里提问。站内不放价格，加入方式以星球页面为准。</p>
+    <a class="btn" href="https://t.zsxq.com/Wl8c8" rel="noopener">了解知识星球 →</a>
+  </section>
+
+  <p class="muted">说明：本工具只做加减乘除，不预测收益、不承诺结果。报价 =（真实总工时 × 时薪 + 直接成本）×（1 + 风险缓冲）÷（1 − 平台抽成 − 税）。清空浏览器数据会一起清掉输入。</p>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js"></script>
+<script src="quote-core.js"></script>
+<script src="app.js"></script>
+<script>SiteFooter.render();</script>
+</body>
+</html>

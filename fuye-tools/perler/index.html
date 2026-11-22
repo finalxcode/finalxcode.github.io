@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>免费拼豆图纸生成器：图片一键转拼豆图纸 + 色号用量清单 - 副业实验账本</title>
+<meta name="description" content="上传图片，自动生成拼豆图纸：按颗数设尺寸、限制颜色数、格子里标色号，算出每种颜色要多少颗、需要几块拼板，可下载 PNG / CSV 或直接打印。浏览器本地运行，图片不上传。">
+<meta property="og:title" content="免费拼豆图纸生成器">
+<meta property="og:description" content="图片转拼豆图纸，自动出色号和用量清单。本地运行，图片不上传。">
+<link rel="stylesheet" href="style.css">
+<style>
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+.field .hint{font-size:12px;color:var(--muted);margin-top:3px}
+.checks{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font-size:14px}
+.checks label{display:flex;align-items:center;gap:6px}
+.drop{position:relative;border:2px dashed var(--line);border-radius:12px;padding:18px;text-align:center}
+.drop.on{border-color:var(--brand);background:#f7fbfa}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop p{margin:0}
+#pattern{display:block;width:100%;height:auto;image-rendering:pixelated;border:1px solid var(--line);border-radius:8px;margin-top:10px}
+.kvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 20px}
+.kv{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dotted var(--line);padding:6px 0;font-size:14px}
+.kv b{font-variant-numeric:tabular-nums}
+table.list{width:100%;border-collapse:collapse;font-size:14px}
+table.list th,table.list td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+table.list td:nth-child(3),table.list td:nth-child(4){font-variant-numeric:tabular-nums}
+.sw{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.25);vertical-align:-2px}
+details.card summary{cursor:pointer;font-weight:600}
+details.card textarea{width:100%;box-sizing:border-box;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.cta{margin:2rem 0 1rem;padding:1.25rem;border:1px solid #dbe4e2;border-radius:12px;background:#f7fbfa}
+.cta h2{font-size:1.02rem;margin:0 0 .5rem}
+.cta p{margin:.35rem 0;font-size:.94rem;color:#37474f}
+.cta .btn{display:inline-block;margin-top:.6rem;padding:.5rem 1rem;border-radius:8px;background:#0a7d6b;color:#fff;text-decoration:none;font-size:.92rem}
+@media print{.no-print,header.top,footer{display:none!important}.card{border:0;box-shadow:none;padding:0}#pattern{border:0}}
+</style>
+</head>
+<body>
+<header class="top no-print"><div class="wrap"><a class="brand" href="../" data-site-name>副业实验账本</a><nav class="nav"><a href="../adlaw-checker/">违禁词检测</a><a href="../fee-calculator/">到账计算器</a><a href="../quote/">接单报价</a></nav></div></header>
+<main class="wrap">
+  <h1>拼豆图纸生成器</h1>
+  <p class="lead no-print">上传一张图片，自动变成拼豆图纸：一格一颗豆，标好色号，再算出每种颜色要多少颗、需要几块拼板。图片只在你的浏览器里处理，不会上传。</p>
+
+  <div class="card no-print">
+    <h2 style="font-size:16px;margin:0 0 10px">1. 选图和设置</h2>
+    <div class="drop" id="drop"><input type="file" id="file" accept="image/*"><p class="muted">点这里选图片，或把图片拖进来。PNG 的透明背景会自动留空。</p></div>
+    <div class="row"><button id="btn-sample">试试示例图</button></div>
+    <div class="fields">
+      <div class="field"><label for="width">宽度（颗）</label><input type="number" id="width" min="5" max="200" step="1" value="52"><div class="hint">高度按原图比例自动算；最大 200</div></div>
+      <div class="field"><label for="maxColors">最多用几种颜色</label><select id="maxColors"><option value="0">不限</option><option value="8">8 种</option><option value="12">12 种</option><option value="16" selected>16 种</option><option value="24">24 种</option><option value="32">32 种</option></select><div class="hint">颜色越少，越好拼、越好备货</div></div>
+      <div class="field"><label for="board">拼板</label><select id="board"><option value="29" selected>29 × 29（常见 5mm 方板）</option><option value="0">不画分板线</option></select><div class="hint">蓝线是拼板边界</div></div>
+    </div>
+    <div class="checks">
+      <label><input type="checkbox" id="showCodes" checked> 格子里标色号</label>
+      <label><input type="checkbox" id="cleanRare" checked> 清理零散杂色</label>
+      <label><input type="checkbox" id="whiteEmpty"> 白色背景当空白</label>
+      <label><input type="checkbox" id="pixelArt"> 原图是像素画（不做平滑）</label>
+      <label><input type="checkbox" id="dither"> 抖动（渐变更自然，但图纸更碎）</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 10px">2. 图纸</h2>
+    <div id="stats"><p class="muted">先上传一张图片，或点「试试示例图」。</p></div>
+    <canvas id="pattern" width="1" height="1"></canvas>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px;margin:0 0 10px">3. 用料清单</h2>
+    <div id="list"></div>
+    <div class="row no-print">
+      <button class="primary" id="btn-png">下载图纸 PNG</button>
+      <button id="btn-csv">下载清单 CSV</button>
+      <button id="btn-print">打印</button>
+    </div>
+    <p class="muted no-print" id="hint"></p>
+  </div>
+
+  <details class="card no-print">
+    <summary>用你自己的色卡（选填）</summary>
+    <p class="muted">内置的是通用 48 色，<b>不是任何品牌的官方色号</b>。想按你手上那盒豆子出图，把色卡贴进来，每行一个颜色：<code>色号,名称,#色值</code></p>
+    <textarea id="palette-text" rows="6" placeholder="A01,白,#FFFFFF&#10;A02,黑,#1A1A1A&#10;A03,大红,#D7262E"></textarea>
+    <div class="row"><button id="btn-palette">用这份色卡</button><button id="btn-palette-reset">恢复通用 48 色</button></div>
+  </details>
+
+  <section class="cta no-print">
+    <h2>想在闲鱼接拼豆定制单？</h2>
+    <p>出图只是第一步。一单报多少、改几次、先收多少定金，可以用 <a href="../quote/">接单报价计算器</a> 先算清楚。</p>
+    <p>定制单的沟通话术、交付流程和踩坑记录，我在知识星球里持续更新。站内不放价格，加入方式以星球页面为准。</p>
+    <a class="btn" href="https://t.zsxq.com/Wl8c8" rel="noopener">了解知识星球 →</a>
+  </section>
+
+  <p class="muted no-print">说明：颜色按色差就近匹配，屏幕显示和实物豆子会有色差，买豆前请对照实物色卡。用别人的作品或 IP 形象做图纸出售可能侵权，接单前先确认版权。</p>
+</main>
+<footer id="site-footer" class="no-print"></footer>
+<script src="site.js"></script>
+<script src="palette.js"></script>
+<script src="perler-core.js"></script>
+<script src="app.js"></script>
+<script>SiteFooter.render();</script>
+</body>
+</html>
