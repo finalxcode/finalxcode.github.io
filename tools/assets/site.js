@@ -8,6 +8,8 @@
     adsenseSlot: "",      // AdSense ad unit slot ID for the in-content unit
     supportUrl: "",       // Gumroad / Ko-fi / Buy Me a Coffee link
     supportLabel: "Support this free tool",
+    productUrl: "",       // Checkout link for the Skills Pack; empty keeps the buy button hidden
+    supportEmail: "finalxcode@gmail.com",
     year: new Date().getFullYear()
   };
 
@@ -54,18 +56,30 @@
     });
   }
 
+  function initBuy() {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-buy]"), function (el) {
+      var a = el.querySelector("a.btn");
+      if (!SITE.productUrl || !a) { el.hidden = true; return; }
+      a.href = SITE.productUrl;
+      a.addEventListener("click", function () { track("buy_click", { page: location.pathname }); });
+      el.hidden = false;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-buy-closed]"), function (el) { el.hidden = !!SITE.productUrl; });
+  }
+
   function renderFooter() {
     var el = document.getElementById("site-footer");
     if (!el) return;
     var base = document.querySelector("[data-base]");
     var b = base ? base.getAttribute("data-base") : "./";
     el.innerHTML = "<p>© " + SITE.year + ' <a href="' + b + '">' + SITE.name + "</a> · Free tools, everything runs in your browser</p>" +
-      '<p><a href="' + b + 'about/">About</a><a href="' + b + 'privacy/">Privacy</a><a href="https://github.com/finalxcode/fuye-skills" rel="noopener">GitHub</a></p>';
+      '<p><a href="' + b + 'skills-pack/">Skills Pack</a><a href="' + b + 'about/">About</a><a href="' + b + 'terms/">Terms</a><a href="' + b + 'privacy/">Privacy</a><a href="' + b + 'terms/#refunds">Refunds</a><a href="https://github.com/finalxcode/fuye-skills" rel="noopener">GitHub</a></p>' +
+      '<p>Support: <a href="mailto:' + SITE.supportEmail + '">' + SITE.supportEmail + "</a></p>";
   }
 
   root.SITE = SITE;
   root.Site = {
     track: track,
-    init: function () { renderFooter(); initSupport(); initAnalytics(); initAds(); }
+    init: function () { renderFooter(); initSupport(); initBuy(); initAnalytics(); initAds(); }
   };
 })(this);
