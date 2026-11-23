@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Perler Bead Pattern Generator: Photo to Bead Pattern + Color Count</title>
+<meta name="description" content="Turn any photo or pixel art into a Perler, Hama or Artkal bead pattern. Set the size, limit colors, see color codes in every cell, get a bead count per color and pegboard layout. Download PNG / CSV or print. Free, runs in your browser, no upload.">
+<link rel="canonical" href="https://finalxcode.github.io/tools/perler-bead-pattern-generator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Perler Bead Pattern Generator">
+<meta property="og:description" content="Photo to bead pattern with color codes, bead counts and pegboard layout. Runs in your browser, nothing is uploaded.">
+<meta property="og:url" content="https://finalxcode.github.io/tools/perler-bead-pattern-generator/">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.checks{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font-size:14px}
+.checks label{display:flex;align-items:center;gap:6px}
+.drop{position:relative;border:2px dashed var(--line);border-radius:12px;padding:18px;text-align:center}
+.drop.on{border-color:var(--brand);background:#f7fbfa}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop p{margin:0}
+#pattern{display:block;width:100%;height:auto;image-rendering:pixelated;border:1px solid var(--line);border-radius:8px;margin-top:10px}
+table.list td:nth-child(3),table.list td:nth-child(4){font-variant-numeric:tabular-nums}
+.sw{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.25);vertical-align:-2px}
+details.card summary{cursor:pointer;font-weight:600}
+details.card textarea{font-family:ui-monospace,Menlo,monospace;font-size:13px;min-height:120px}
+@media print{.no-print,header.top,footer{display:none!important}.card{border:0;box-shadow:none;padding:0}#pattern{border:0}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebApplication","name":"Perler Bead Pattern Generator","url":"https://finalxcode.github.io/tools/perler-bead-pattern-generator/","applicationCategory":"DesignApplication","operatingSystem":"Any (web browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is my photo uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. The pattern is generated in your browser with JavaScript. The image never leaves your device."}},
+{"@type":"Question","name":"Does it work for Hama, Artkal and mini beads?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose 5 mm for Perler, Hama midi and Artkal S, or 2.6 mm for mini beads. Paste your brand's color chart to match the exact colors you own."}},
+{"@type":"Question","name":"How many beads fit on one pegboard?","acceptedAnswer":{"@type":"Answer","text":"A large square pegboard is 29 × 29 pegs, which holds 841 beads. The generator draws a blue line at every board edge and tells you how many boards you need."}},
+{"@type":"Question","name":"Are the color codes official Perler codes?","acceptedAnswer":{"@type":"Answer","text":"No. The built-in 48-color palette is generic. To get brand codes, paste that brand's color chart (code,name,#hex) into the custom palette box."}}
+]}]}
+</script>
+</head>
+<body>
+<header class="top no-print" data-base="../"><div class="wrap"><a class="brand" href="../">SideLedger Tools</a><nav class="nav"><a href="../perler-bead-pattern-generator/">Bead Patterns</a><a href="../freelance-rate-calculator/">Freelance Rate</a><a href="../break-even-calculator/">Break-even</a><a href="../seller-fee-calculator/">Seller Fees</a></nav></div></header>
+<main class="wrap">
+  <h1>Free Perler Bead Pattern Generator</h1>
+  <p class="lead no-print">Upload a photo or pixel art and get a printable bead pattern: one cell per bead, a color code in each cell, a bead count for every color and the number of pegboards you need. Works for Perler, Hama, Artkal and mini beads. Your image is processed in your browser and never uploaded.</p>
+
+  <div class="card no-print">
+    <h2>1. Choose an image and settings</h2>
+    <div class="drop" id="drop"><input type="file" id="file" accept="image/*" aria-label="Choose image"><p class="muted">Click to choose an image, or drag one here. Transparent PNG backgrounds stay empty.</p></div>
+    <div class="row"><button id="btn-sample">Try a sample image</button></div>
+    <div class="fields">
+      <div class="field"><label for="width">Width (beads)</label><input type="number" id="width" min="5" max="200" step="1" value="52"><div class="hint">Height follows the image ratio. Max 200.</div></div>
+      <div class="field"><label for="maxColors">Max colors</label><select id="maxColors"><option value="0">No limit</option><option value="8">8</option><option value="12">12</option><option value="16" selected>16</option><option value="24">24</option><option value="32">32</option></select><div class="hint">Fewer colors = easier to build and buy</div></div>
+      <div class="field"><label for="board">Pegboard</label><select id="board"><option value="29" selected>29 × 29 (large square)</option><option value="14">14 × 14 (small square)</option><option value="0">No board lines</option></select><div class="hint">Blue lines mark board edges</div></div>
+      <div class="field"><label for="beadSize">Bead size</label><select id="beadSize"><option value="5" selected>5 mm (Perler, Hama midi, Artkal S)</option><option value="2.6">2.6 mm (mini beads)</option></select><div class="hint">Used for the finished size</div></div>
+    </div>
+    <div class="checks">
+      <label><input type="checkbox" id="showCodes" checked> Show color codes in cells</label>
+      <label><input type="checkbox" id="cleanRare" checked> Remove stray colors</label>
+      <label><input type="checkbox" id="whiteEmpty"> Treat white background as empty</label>
+      <label><input type="checkbox" id="pixelArt"> Image is pixel art (no smoothing)</label>
+      <label><input type="checkbox" id="dither"> Dithering (smoother gradients, busier pattern)</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Pattern</h2>
+    <div id="stats"><p class="muted">Upload an image or click "Try a sample image".</p></div>
+    <canvas id="pattern" width="1" height="1"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>3. Bead shopping list</h2>
+    <div id="list"></div>
+    <div class="row no-print">
+      <button class="primary" id="btn-png">Download pattern PNG</button>
+      <button id="btn-csv">Download list CSV</button>
+      <button id="btn-print">Print</button>
+    </div>
+    <p class="muted no-print" id="hint"></p>
+  </div>
+
+  <details class="card no-print">
+    <summary>Use your own palette (optional)</summary>
+    <p class="muted">The built-in palette is a generic 48-color set, <b>not official brand codes</b>. To match the beads you own, paste your color chart, one color per line: <code>code,name,#hex</code></p>
+    <textarea id="palette-text" rows="6" placeholder="P01,White,#FFFFFF&#10;P18,Black,#1A1A1A&#10;P05,Red,#D7262E"></textarea>
+    <div class="row"><button id="btn-palette">Use this palette</button><button id="btn-palette-reset">Back to generic 48 colors</button></div>
+  </details>
+
+  <div class="ad-slot no-print" data-ad-slot></div>
+
+  <section class="cta no-print" data-support hidden>
+    <h2>Selling bead art or custom orders?</h2>
+    <p>Work out a price that covers your time with the <a href="../freelance-rate-calculator/">freelance rate calculator</a>. If this generator saved you time, you can support it below.</p>
+    <a class="btn" href="#" rel="noopener">Support this free tool</a>
+  </section>
+
+  <article class="article no-print">
+    <h2>How to make a Perler bead pattern from a photo</h2>
+    <ol>
+      <li><b>Pick a simple image.</b> Bold shapes and clear outlines convert best. Crop tightly around the subject first.</li>
+      <li><b>Set the width in beads.</b> 29 beads fits one large pegboard; 52–58 beads is two boards wide and gives good detail for faces and characters.</li>
+      <li><b>Limit the colors.</b> 8–16 colors is usually enough. Fewer colors means fewer bead bags to buy and a cleaner result.</li>
+      <li><b>Check the stray-color cleanup.</b> It merges single, isolated beads into the surrounding color so you are not placing one odd bead in a sea of red.</li>
+      <li><b>Download or print.</b> The PNG has a code in every cell and board lines in blue; the CSV is your shopping list with 10% extra for spills.</li>
+    </ol>
+    <h2>Tips for better bead patterns</h2>
+    <ul>
+      <li>For pixel art and game sprites, tick <b>pixel art</b> and set the width to the sprite's real pixel width so each pixel becomes exactly one bead.</li>
+      <li>Logos on a white background: tick <b>treat white background as empty</b> so you only place beads where the design is.</li>
+      <li>Dithering helps photos with soft gradients, but makes the pattern harder to build. Leave it off for cartoons.</li>
+      <li>Screen colors differ from real beads. Compare with a physical color chart before you buy.</li>
+    </ul>
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details><summary>Is my photo uploaded anywhere?</summary><p>No. Everything runs in your browser; the image never leaves your device.</p></details>
+      <details><summary>Does it work for Hama, Artkal and mini beads?</summary><p>Yes. Pick 5 mm for Perler, Hama midi and Artkal S, or 2.6 mm for minis, and paste your brand's color chart to use its codes.</p></details>
+      <details><summary>How many beads fit on one pegboard?</summary><p>A large square pegboard is 29 × 29 pegs (841 beads). The generator draws a line at every board edge and counts the boards.</p></details>
+      <details><summary>Are the color codes official Perler codes?</summary><p>No. The default palette is generic. Paste an official chart into the custom palette box to get brand codes.</p></details>
+      <details><summary>Can I sell items made from these patterns?</summary><p>Patterns made from your own artwork are yours. Characters, logos and other people's art may be protected by copyright or trademark, so check before selling.</p></details>
+    </div>
+  </article>
+
+  <section class="related no-print"><b>More free tools:</b> <a href="../freelance-rate-calculator/">Freelance rate calculator</a><a href="../break-even-calculator/">Break-even calculator</a><a href="../seller-fee-calculator/">Seller fee calculator</a></section>
+</main>
+<footer id="site-footer" class="no-print"></footer>
+<script src="../assets/site.js"></script>
+<script src="palette.js"></script>
+<script src="perler-core.js"></script>
+<script src="app.js"></script>
+<script>Site.init();</script>
+</body>
+</html>

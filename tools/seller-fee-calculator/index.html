@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seller Fee Calculator: Etsy, eBay &amp; Marketplace Profit per Sale (Free)</title>
+<meta name="description" content="See what you actually keep from each sale on Etsy, eBay or any marketplace. Enter sale fee %, payment processing, ad fees, listing fee, item and shipping costs to get payout, profit, margin, break-even price and the price you need for a target profit. Free, runs in your browser.">
+<link rel="canonical" href="https://finalxcode.github.io/tools/seller-fee-calculator/">
+<meta property="og:title" content="Seller Fee &amp; Profit Calculator">
+<meta property="og:description" content="Payout, profit, margin and break-even price for any marketplace. You enter the current fee rates.">
+<meta property="og:url" content="https://finalxcode.github.io/tools/seller-fee-calculator/">
+<link rel="stylesheet" href="../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebApplication","name":"Seller Fee Calculator","url":"https://finalxcode.github.io/tools/seller-fee-calculator/","applicationCategory":"BusinessApplication","operatingSystem":"Any (web browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Why doesn't the calculator include Etsy or eBay fee rates?","acceptedAnswer":{"@type":"Answer","text":"Marketplace fees change and vary by country, category and seller level. Entering the rate from your platform's current fee page keeps the result accurate."}},
+{"@type":"Question","name":"Are fees charged on shipping too?","acceptedAnswer":{"@type":"Answer","text":"On most marketplaces the transaction and payment fees apply to the total the buyer pays, including shipping. This calculator applies percentage fees to item price plus shipping charged."}},
+{"@type":"Question","name":"How do I find the price I need to charge?","acceptedAnswer":{"@type":"Answer","text":"Enter a target profit per sale. The calculator solves for the item price that leaves that profit after all fees and costs."}}
+]}]}
+</script>
+</head>
+<body>
+<header class="top" data-base="../"><div class="wrap"><a class="brand" href="../">SideLedger Tools</a><nav class="nav"><a href="../perler-bead-pattern-generator/">Bead Patterns</a><a href="../freelance-rate-calculator/">Freelance Rate</a><a href="../break-even-calculator/">Break-even</a><a href="../seller-fee-calculator/">Seller Fees</a></nav></div></header>
+<main class="wrap">
+  <h1>Seller Fee &amp; Profit Calculator</h1>
+  <p class="lead">Marketplace fees stack up: a sale fee, payment processing, sometimes ad fees and a listing fee, often charged on shipping as well. Enter your platform's current rates and costs to see what you actually keep, your break-even price and the price you need for the profit you want. Your numbers stay in your browser.</p>
+  <div class="card">
+    <h2>1. Your numbers</h2>
+    <div class="fields">
+      <div class="field"><label for="label">Item name (optional)</label><input type="text" id="label" placeholder="e.g. Bead keychain"></div>
+      <div class="field"><label for="currency">Currency</label><select id="currency"><option value="$">$ USD</option><option value="€">€ EUR</option><option value="£">£ GBP</option><option value="C$">C$ CAD</option><option value="A$">A$ AUD</option><option value="₹">₹ INR</option><option value="¥">¥ JPY / CNY</option></select></div>
+      <div class="field"><label for="price">Item price</label><input type="number" min="0" step="0.01" id="price" placeholder="e.g. 20"></div>
+      <div class="field"><label for="shippingCharged">Shipping charged to buyer</label><input type="number" min="0" step="0.01" id="shippingCharged" placeholder="e.g. 5"></div>
+      <div class="field"><label for="itemCost">Item cost</label><input type="number" min="0" step="0.01" id="itemCost" placeholder="e.g. 6"><div class="hint">Materials and packaging</div></div>
+      <div class="field"><label for="shippingCost">Your actual shipping cost</label><input type="number" min="0" step="0.01" id="shippingCost" placeholder="e.g. 4.5"></div>
+      <div class="field"><label for="salePct">Sale / transaction fee (%)</label><input type="number" min="0" step="0.01" id="salePct" placeholder="from your platform's fee page"></div>
+      <div class="field"><label for="payPct">Payment processing (%)</label><input type="number" min="0" step="0.01" id="payPct" placeholder="e.g. 3"></div>
+      <div class="field"><label for="payFixed">Payment processing fixed fee</label><input type="number" min="0" step="0.01" id="payFixed" placeholder="e.g. 0.25"><div class="hint">Per order</div></div>
+      <div class="field"><label for="listingFee">Listing fee per sale</label><input type="number" min="0" step="0.01" id="listingFee" placeholder="e.g. 0.20"></div>
+      <div class="field"><label for="adPct">Ad / offsite ads fee (%, optional)</label><input type="number" min="0" step="0.01" id="adPct" placeholder="e.g. 0"></div>
+      <div class="field"><label for="targetProfit">Target profit per sale (optional)</label><input type="number" min="0" step="0.01" id="targetProfit" placeholder="e.g. 8"></div>
+    </div>
+    <div class="row"><button id="btn-demo">Fill in an example</button><button id="btn-clear">Clear</button></div>
+    <p class="muted">The example uses made-up round numbers, not any platform's real rates.</p>
+  </div>
+  <div class="card"><h2>2. Result</h2><div id="result"><p class="muted">Enter an item price to start.</p></div></div>
+  <div class="card"><h2>3. Save this</h2><div class="row" style="margin-top:0"><button class="primary" id="btn-gen">Generate summary</button><button id="btn-copy">Copy</button></div><p class="muted" id="hint" style="margin:10px 0 0"></p><pre class="out" id="out" style="display:none"></pre></div>
+  <div class="ad-slot" data-ad-slot></div>
+  <section class="cta" data-support hidden><h2>Found this useful?</h2><p>The calculator is free and has no sign-up. If it helped, you can support it.</p><a class="btn" href="#" rel="noopener">Support this free tool</a></section>
+  <article class="article">
+    <h2>How it is calculated</h2>
+    <p><b>Buyer pays</b> = item price + shipping charged. <b>Fees</b> = buyer pays × (sale % + processing % + ad %) + processing fixed fee + listing fee. <b>Profit</b> = buyer pays − fees − item cost − your shipping cost.</p>
+    <p>The <b>break-even price</b> and <b>price for target profit</b> solve the same equation for the item price, keeping your shipping charge fixed.</p>
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details><summary>Why aren't Etsy or eBay rates built in?</summary><p>Fees change and depend on country, category and seller level. Use the numbers on your platform's current fee page so the result matches what you will actually be charged.</p></details>
+      <details><summary>Are fees charged on shipping?</summary><p>On most marketplaces, yes: transaction and payment fees apply to the total the buyer pays. If your platform differs, set shipping charged to 0 and add it to your payout manually.</p></details>
+      <details><summary>What about taxes and refunds?</summary><p>Not included. Sales tax or VAT collected by the marketplace usually is not your revenue; income tax depends on where you live.</p></details>
+    </div>
+  </article>
+  <section class="related"><b>More free tools:</b> <a href="../break-even-calculator/">Break-even calculator</a><a href="../freelance-rate-calculator/">Freelance rate calculator</a><a href="../perler-bead-pattern-generator/">Perler bead pattern generator</a></section>
+</main>
+<footer id="site-footer"></footer>
+<script src="../assets/site.js"></script>
+<script src="fee-core.js"></script>
+<script>
+window.CALC = {
+  core: window.FeeCore, storageKey: "sl_fees_v1",
+  fields: ["label", "currency", "price", "shippingCharged", "itemCost", "shippingCost", "salePct", "payPct", "payFixed", "listingFee", "adPct", "targetProfit"],
+  demo: { label: "Example item", price: "20", shippingCharged: "5", itemCost: "6", shippingCost: "4.5", salePct: "6.5", payPct: "3", payFixed: "0.25", listingFee: "0.2", adPct: "0", targetProfit: "8" },
+  render: function (r, m) {
+    var rows = [["Buyer pays", m(r.gross)], ["Total fees", m(r.totalFees) + " (" + r.feeRate + "%)"],
+      ["Sale fee / processing", m(r.saleFee) + " / " + m(r.payFee)], ["Ads / listing", m(r.adFee) + " / " + m(r.listingFee)],
+      ["Payout", m(r.payout)], ["Margin", r.margin + "%", r.profit < 0 ? "neg" : "pos"], ["Break-even item price", m(r.breakEvenPrice)]];
+    if (r.targetProfit > 0) rows.push(["Price for " + m(r.targetProfit) + " profit", m(r.priceForTarget)]);
+    return { big: "Profit " + m(r.profit), sub: "per sale, after fees and costs", rows: rows };
+  }
+};
+</script>
+<script src="../assets/calc-app.js"></script>
+<script>Site.init();</script>
+</body>
+</html>
