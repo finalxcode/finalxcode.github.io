@@ -39,6 +39,3 @@ disqus:             finalxcode
 #  creator:			Rizky Ariestiyansyah
 #  codename:			Naringu
 #  link:         https://github.com/ariestiyansyah/naringu
-
-# Publish the payment-provider domain verification file (Jekyll skips dot-directories by default)
-include: [".well-known"]

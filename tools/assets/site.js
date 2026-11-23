@@ -2,7 +2,7 @@
 (function (root) {
   var SITE = {
     name: "SideLedger Tools",
-    baseUrl: "https://finalxcode.github.io/tools/",
+    baseUrl: "https://solosaas.top/",
     ga4Id: "",            // Google Analytics 4 measurement ID, e.g. "G-XXXXXXXXXX"
     adsenseClient: "",    // AdSense publisher ID, e.g. "ca-pub-1234567890123456"
     adsenseSlot: "",      // AdSense ad unit slot ID for the in-content unit
