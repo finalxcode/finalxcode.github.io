@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://finalxcode.github.io/tools/sitemap.xml
