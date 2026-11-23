@@ -3,20 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Seller Fee Calculator: Etsy, eBay &amp; Marketplace Profit per Sale (Free)</title>
-<meta name="description" content="See what you actually keep from each sale on Etsy, eBay or any marketplace. Enter sale fee %, payment processing, ad fees, listing fee, item and shipping costs to get payout, profit, margin, break-even price and the price you need for a target profit. Free, runs in your browser.">
+<title>Seller Fee Calculator for Etsy, eBay &amp; Other Marketplaces</title>
+<meta name="description" content="Enter current marketplace fees and your item and shipping costs to estimate payout, profit margin, break-even price and a price for your target profit.">
 <link rel="canonical" href="https://finalxcode.github.io/tools/seller-fee-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SideLedger Tools">
 <meta property="og:title" content="Seller Fee &amp; Profit Calculator">
 <meta property="og:description" content="Payout, profit, margin and break-even price for any marketplace. You enter the current fee rates.">
 <meta property="og:url" content="https://finalxcode.github.io/tools/seller-fee-calculator/">
+<meta property="og:image" content="https://finalxcode.github.io/tools/assets/social-card.png">
+<meta property="og:image:alt" content="SideLedger Tools: free calculators and bead patterns">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="SideLedger Tools: free calculators and bead patterns">
 <link rel="stylesheet" href="../assets/style.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"WebApplication","name":"Seller Fee Calculator","url":"https://finalxcode.github.io/tools/seller-fee-calculator/","applicationCategory":"BusinessApplication","operatingSystem":"Any (web browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},
 {"@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Why doesn't the calculator include Etsy or eBay fee rates?","acceptedAnswer":{"@type":"Answer","text":"Marketplace fees change and vary by country, category and seller level. Entering the rate from your platform's current fee page keeps the result accurate."}},
-{"@type":"Question","name":"Are fees charged on shipping too?","acceptedAnswer":{"@type":"Answer","text":"On most marketplaces the transaction and payment fees apply to the total the buyer pays, including shipping. This calculator applies percentage fees to item price plus shipping charged."}},
-{"@type":"Question","name":"How do I find the price I need to charge?","acceptedAnswer":{"@type":"Answer","text":"Enter a target profit per sale. The calculator solves for the item price that leaves that profit after all fees and costs."}}
+{"@type":"Question","name":"Why aren't Etsy or eBay rates built in?","acceptedAnswer":{"@type":"Answer","text":"Fees change and depend on country, category and seller level. Use the numbers on your platform's current fee page so the result matches what you will actually be charged."}},
+{"@type":"Question","name":"Are fees charged on shipping?","acceptedAnswer":{"@type":"Answer","text":"On most marketplaces, yes: transaction and payment fees apply to the total the buyer pays. If your platform differs, set shipping charged to 0 and add it to your payout manually."}},
+{"@type":"Question","name":"What about taxes and refunds?","acceptedAnswer":{"@type":"Answer","text":"Not included. Sales tax or VAT collected by the marketplace usually is not your revenue; income tax depends on where you live."}}
 ]}]}
 </script>
 </head>
@@ -52,6 +58,7 @@
     <h2>How it is calculated</h2>
     <p><b>Buyer pays</b> = item price + shipping charged. <b>Fees</b> = buyer pays × (sale % + processing % + ad %) + processing fixed fee + listing fee. <b>Profit</b> = buyer pays − fees − item cost − your shipping cost.</p>
     <p>The <b>break-even price</b> and <b>price for target profit</b> solve the same equation for the item price, keeping your shipping charge fixed.</p>
+    <p>To work out how many orders you need to cover startup costs, use the <a href="../break-even-calculator/">break-even sales calculator</a>.</p>
     <h2>FAQ</h2>
     <div class="faq">
       <details><summary>Why aren't Etsy or eBay rates built in?</summary><p>Fees change and depend on country, category and seller level. Use the numbers on your platform's current fee page so the result matches what you will actually be charged.</p></details>
