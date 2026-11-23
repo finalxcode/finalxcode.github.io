@@ -36,15 +36,16 @@
     var payout = r2(gross - totalFees);
     var profit = r2(payout - itemCost - shippingCost);
     var fixedOut = listingFee + payFixed + itemCost + shippingCost - shippingCharged * (1 - pctTotal);
-    // Fees are rounded one by one, so check the solved price with the same rounding and nudge it up by cents.
+    // Fees are rounded one by one, so the exact answer can sit a few cents either side of the algebraic one:
+    // start just below it and take the first price that reaches the target with the same rounding.
     var profitAt = function (p) {
       var g = r2(p + shippingCharged);
       var fees = r2(r2(g * salePct / 100) + r2(g * payPct / 100 + payFixed) + r2(g * adPct / 100) + listingFee);
       return r2(r2(g - fees) - itemCost - shippingCost);
     };
     var solve = function (target) {
-      var p = Math.max(0, r2((fixedOut + target) / (1 - pctTotal)));
-      for (var i = 0; i < 500 && profitAt(p) < r2(target); i++) p = r2(p + 0.01);
+      var p = Math.max(0, r2((fixedOut + target - 0.03) / (1 - pctTotal)));
+      for (var i = 0; i < 20000 && profitAt(p) < r2(target); i++) p = r2(p + 0.01);
       return p;
     };
     var priceForTarget = solve(targetProfit);
