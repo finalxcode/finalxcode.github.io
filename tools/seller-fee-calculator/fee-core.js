@@ -44,7 +44,8 @@
       return r2(r2(g - fees) - itemCost - shippingCost);
     };
     var solve = function (target) {
-      var p = Math.max(0, r2((fixedOut + target - 0.03) / (1 - pctTotal)));
+      // 0.01 is the lowest price the calculator accepts (shipping charged can already cover everything).
+      var p = Math.max(0.01, r2((fixedOut + target - 0.03) / (1 - pctTotal)));
       for (var i = 0; i < 20000 && profitAt(p) < r2(target); i++) p = r2(p + 0.01);
       return p;
     };
