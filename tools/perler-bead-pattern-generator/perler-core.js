@@ -117,7 +117,8 @@
     var counts = countUse(grid, pal.length), allowed = all;
     var used = []; for (i = 0; i < pal.length; i++) if (counts[i] > 0) used.push(i);
     var mc = opts.maxColors | 0;
-    if (mc > 0 && used.length > mc) {
+    // Dithering must also stay inside the limit, so it only gets the colors the first pass kept.
+    if (mc > 0 && (used.length > mc || opts.dither)) {
       used.sort(function (a, b) { return counts[b] - counts[a] || a - b; });
       allowed = used.slice(0, mc);
     }
@@ -126,8 +127,7 @@
       var tot0 = 0; for (i = 0; i < pal.length; i++) tot0 += counts[i];
       var th = Math.max(3, Math.ceil(tot0 * 0.005));
       var kept = allowed.filter(function (k) { return counts[k] >= th; });
-      if (!kept.length) kept = allowed.slice(0, 1);
-      if (kept.length < allowed.filter(function (k) { return counts[k] > 0; }).length) allowed = kept;
+      if (kept.length && kept.length < allowed.filter(function (k) { return counts[k] > 0; }).length) allowed = kept;
     }
     if (allowed !== all || opts.dither) {
       grid = mapPixels(data, w, h, pal, allowed, empty, !!opts.dither);
@@ -157,7 +157,12 @@
     var cols = Math.ceil(w / size), rows = Math.ceil(h / size);
     return { cols: cols, rows: rows, total: cols * rows };
   }
-  function q(s) { s = String(s); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+  function q(s) {
+    s = String(s);
+    // A leading = + - @ would run as a formula when the CSV is opened in a spreadsheet.
+    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
   function toCSV(res) {
     if (!res || res.error) return "";
     var L = ["Code,Name,Hex,Beads,Buy (+10%)"];

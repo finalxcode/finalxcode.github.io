@@ -58,7 +58,7 @@
     };
     if (budget > 0) {
       res.budgetHourly = r2((budget * keep - directCost) / totalHours);
-      res.budgetVerdict = budget >= quoteRounded ? "ok" : (budget >= floor ? "negotiate" : "reject");
+      res.budgetVerdict = budget >= Math.max(quoteRounded, floor) ? "ok" : (budget >= floor ? "negotiate" : "reject");
       if (res.budgetVerdict === "ok") res.notes.push("The client's budget covers your quote. Put the scope and number of revisions in writing.");
       else if (res.budgetVerdict === "negotiate") res.notes.push("The budget is between your floor and your quote: accept only if you cut scope (one less revision, one less deliverable) instead of cutting your rate.");
       else res.notes.push("The budget is below your floor. At this price you would earn " + m(res.budgetHourly) + "/hour. Decline, or reduce the scope until the budget covers it.");

@@ -36,15 +36,26 @@
     var payout = r2(gross - totalFees);
     var profit = r2(payout - itemCost - shippingCost);
     var fixedOut = listingFee + payFixed + itemCost + shippingCost - shippingCharged * (1 - pctTotal);
-    var priceForTarget = r2((fixedOut + targetProfit) / (1 - pctTotal));
-    var breakEvenPrice = r2(fixedOut / (1 - pctTotal));
+    // Fees are rounded one by one, so check the solved price with the same rounding and nudge it up by cents.
+    var profitAt = function (p) {
+      var g = r2(p + shippingCharged);
+      var fees = r2(r2(g * salePct / 100) + r2(g * payPct / 100 + payFixed) + r2(g * adPct / 100) + listingFee);
+      return r2(r2(g - fees) - itemCost - shippingCost);
+    };
+    var solve = function (target) {
+      var p = Math.max(0, r2((fixedOut + target) / (1 - pctTotal)));
+      for (var i = 0; i < 500 && profitAt(p) < r2(target); i++) p = r2(p + 0.01);
+      return p;
+    };
+    var priceForTarget = solve(targetProfit);
+    var breakEvenPrice = solve(0);
     var m = function (n) { return money(n, cur); };
     var res = {
       currency: cur, price: r2(price), shippingCharged: r2(shippingCharged), gross: gross,
       saleFee: saleFee, payFee: payFee, adFee: adFee, listingFee: r2(listingFee), totalFees: totalFees,
       feeRate: r2(totalFees / gross * 100), payout: payout, itemCost: r2(itemCost), shippingCost: r2(shippingCost),
       profit: profit, margin: r2(profit / gross * 100), targetProfit: r2(targetProfit),
-      priceForTarget: Math.max(0, priceForTarget), breakEvenPrice: Math.max(0, breakEvenPrice), notes: []
+      priceForTarget: priceForTarget, breakEvenPrice: breakEvenPrice, notes: []
     };
     if (profit < 0) res.notes.push("You lose " + m(-profit) + " on every sale at this price. The break-even price is " + m(res.breakEvenPrice) + ".");
     if (targetProfit > 0) res.notes.push("To keep " + m(targetProfit) + " profit per sale, price the item at " + m(res.priceForTarget) + " (same shipping charge).");

@@ -39,9 +39,11 @@
       res.notes.push(contribution < 0 ? "Every sale loses " + m(-contribution) + ". Selling more makes it worse: raise the price or cut costs before you start."
         : "Each sale leaves nothing to cover fixed costs. Change the model first.");
     } else {
-      res.breakEvenQty = Math.ceil(fixedCost / contribution);
+      // Divide in whole cents: 1.10 / 0.10 is 11.000000000000002 in floating point.
+      var cents = function (n) { return Math.round(n * 100); };
+      res.breakEvenQty = Math.ceil(cents(fixedCost) / cents(contribution));
       res.breakEvenRevenue = r2(res.breakEvenQty * price);
-      res.targetQty = Math.ceil((fixedCost + targetProfit) / contribution);
+      res.targetQty = Math.ceil((cents(fixedCost) + cents(targetProfit)) / cents(contribution));
       if (minutes > 0) {
         res.breakEvenHours = r2(res.breakEvenQty * minutes / 60);
         res.targetHours = r2(res.targetQty * minutes / 60);
