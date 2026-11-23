@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Freelance Rate Calculator: How Much to Charge for a Project (Free)</title>
+<meta name="description" content="Work out what to charge for a freelance project. Includes communication time, revision rounds, platform fees (Fiverr, Upwork, Etsy) and tax, then gives a quote, a walk-away floor, a deposit and a verdict on the client's budget. Free, runs in your browser.">
+<link rel="canonical" href="https://finalxcode.github.io/tools/freelance-rate-calculator/">
+<meta property="og:title" content="Freelance Rate Calculator">
+<meta property="og:description" content="Quote, walk-away floor and deposit, with communication, revisions, platform fees and tax built in.">
+<meta property="og:url" content="https://finalxcode.github.io/tools/freelance-rate-calculator/">
+<link rel="stylesheet" href="../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebApplication","name":"Freelance Rate Calculator","url":"https://finalxcode.github.io/tools/freelance-rate-calculator/","applicationCategory":"BusinessApplication","operatingSystem":"Any (web browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How do I include platform fees in my freelance quote?","acceptedAnswer":{"@type":"Answer","text":"Divide what you want to keep by (1 minus the fee rate). With a 20% fee, a 400 target becomes 400 / 0.8 = 500. The calculator does this for platform fees and tax together."}},
+{"@type":"Question","name":"What is a walk-away floor?","acceptedAnswer":{"@type":"Answer","text":"The lowest price at which the project still pays your minimum acceptable hourly rate, with no risk buffer. Below it you are working for less than you decided you are worth."}},
+{"@type":"Question","name":"How much communication time should I add?","acceptedAnswer":{"@type":"Answer","text":"Briefs, emails, calls and feedback typically take 10 to 20 percent of production time. Use your own past projects if you track time."}}
+]}]}
+</script>
+</head>
+<body>
+<header class="top" data-base="../"><div class="wrap"><a class="brand" href="../">SideLedger Tools</a><nav class="nav"><a href="../perler-bead-pattern-generator/">Bead Patterns</a><a href="../freelance-rate-calculator/">Freelance Rate</a><a href="../break-even-calculator/">Break-even</a><a href="../seller-fee-calculator/">Seller Fees</a></nav></div></header>
+<main class="wrap">
+  <h1>Freelance Rate Calculator</h1>
+  <p class="lead">The most common way freelancers lose money is quoting only the hours spent producing the work and forgetting communication, revisions, platform fees and tax. This calculator adds them back and gives you a quote plus a floor you should not go below. Your numbers stay in your browser.</p>
+  <div class="card">
+    <h2>1. Your numbers</h2>
+    <div class="fields">
+      <div class="field"><label for="label">Project name (optional)</label><input type="text" id="label" placeholder="e.g. Logo design"></div>
+      <div class="field"><label for="currency">Currency</label><select id="currency"><option value="$">$ USD</option><option value="€">€ EUR</option><option value="£">£ GBP</option><option value="C$">C$ CAD</option><option value="A$">A$ AUD</option><option value="₹">₹ INR</option><option value="¥">¥ JPY / CNY</option></select></div>
+      <div class="field"><label for="hours">Production hours</label><input type="number" min="0" step="0.25" id="hours" placeholder="e.g. 6"><div class="hint">Hands-on time only</div></div>
+      <div class="field"><label for="rate">Target hourly rate</label><input type="number" min="0" step="0.01" id="rate" placeholder="e.g. 50"></div>
+      <div class="field"><label for="minRate">Minimum hourly rate (optional)</label><input type="number" min="0" step="0.01" id="minRate" placeholder="e.g. 35"><div class="hint">Sets the walk-away floor</div></div>
+      <div class="field"><label for="commPct">Communication time (%)</label><input type="number" min="0" step="1" id="commPct" placeholder="default 20"><div class="hint">Briefs, emails, calls</div></div>
+      <div class="field"><label for="revisions">Revision rounds included</label><input type="number" min="0" step="1" id="revisions" placeholder="e.g. 2"></div>
+      <div class="field"><label for="revisionHours">Hours per revision round</label><input type="number" min="0" step="0.25" id="revisionHours" placeholder="e.g. 1"></div>
+      <div class="field"><label for="directCost">Direct costs</label><input type="number" min="0" step="0.01" id="directCost" placeholder="e.g. 20"><div class="hint">Fonts, stock assets, software, subcontractors</div></div>
+      <div class="field"><label for="feePct">Platform fee (%)</label><input type="number" min="0" step="0.1" id="feePct" placeholder="e.g. 20"><div class="hint">Check your platform's current fee page</div></div>
+      <div class="field"><label for="taxPct">Tax set-aside (%, optional)</label><input type="number" min="0" step="0.1" id="taxPct" placeholder="e.g. 0"></div>
+      <div class="field"><label for="bufferPct">Risk buffer (%)</label><input type="number" min="0" step="1" id="bufferPct" placeholder="default 15"><div class="hint">Scope creep, rework, late payment</div></div>
+      <div class="field"><label for="depositPct">Deposit (%)</label><input type="number" min="0" step="1" id="depositPct" placeholder="default 50"></div>
+      <div class="field"><label for="budget">Client budget (optional)</label><input type="number" min="0" step="0.01" id="budget" placeholder="e.g. 450"><div class="hint">Get a verdict on the offer</div></div>
+    </div>
+    <div class="row"><button id="btn-demo">Fill in an example</button><button id="btn-clear">Clear</button></div>
+  </div>
+  <div class="card"><h2>2. Result</h2><div id="result"><p class="muted">Enter hours and a rate to start.</p></div></div>
+  <div class="card"><h2>3. Save this</h2><div class="row" style="margin-top:0"><button class="primary" id="btn-gen">Generate summary</button><button id="btn-copy">Copy</button></div><p class="muted" id="hint" style="margin:10px 0 0"></p><pre class="out" id="out" style="display:none"></pre></div>
+  <div class="ad-slot" data-ad-slot></div>
+  <section class="cta" data-support hidden><h2>Found this useful?</h2><p>The calculator is free and has no sign-up. If it helped you price a project, you can support it.</p><a class="btn" href="#" rel="noopener">Support this free tool</a></section>
+  <article class="article">
+    <h2>How the quote is calculated</h2>
+    <p><b>Quote = (real total hours × hourly rate + direct costs) × (1 + risk buffer) ÷ (1 − platform fee − tax)</b>, rounded up to the next 10 (or 50 above 1,000).</p>
+    <p>Real total hours = production hours + communication time + revision rounds × hours per round. The walk-away floor uses your minimum hourly rate and no buffer.</p>
+    <h2>Example</h2>
+    <p>6 production hours at 80/hour, 20% communication, 2 revision rounds of 1 hour, 30 of direct costs, 15% buffer and no platform fee gives 9.2 real hours, a quote of 890 and a floor of 490 at a minimum rate of 50/hour. A client budget of 600 sits between the two: negotiate by cutting scope, not your rate.</p>
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details><summary>How do I include platform fees in my quote?</summary><p>Divide what you want to keep by (1 − fee rate). With a 20% fee, keeping 400 means quoting 400 ÷ 0.8 = 500. The calculator grosses up fee and tax together.</p></details>
+      <details><summary>What is a walk-away floor?</summary><p>The lowest price that still pays your minimum hourly rate with no buffer. Below it you are working for less than you decided you are worth.</p></details>
+      <details><summary>How much communication time should I add?</summary><p>Briefs, emails, calls and feedback usually take 10–20% of production time. Use your own time logs if you have them.</p></details>
+      <details><summary>Should I charge a deposit?</summary><p>A 30–50% deposit before starting is the simplest protection against unpaid work and clients who disappear.</p></details>
+    </div>
+  </article>
+  <section class="related"><b>More free tools:</b> <a href="../break-even-calculator/">Break-even calculator</a><a href="../perler-bead-pattern-generator/">Perler bead pattern generator</a><a href="../seller-fee-calculator/">Seller fee calculator</a></section>
+</main>
+<footer id="site-footer"></footer>
+<script src="../assets/site.js"></script>
+<script src="quote-core.js"></script>
+<script>
+window.CALC = {
+  core: window.QuoteCore, storageKey: "sl_quote_v1",
+  fields: ["label", "currency", "hours", "rate", "minRate", "commPct", "revisions", "revisionHours", "directCost", "feePct", "taxPct", "bufferPct", "depositPct", "budget"],
+  demo: { label: "Example: logo design", hours: "6", rate: "80", minRate: "50", commPct: "20", revisions: "2", revisionHours: "1", directCost: "30", feePct: "0", taxPct: "0", bufferPct: "15", depositPct: "50", budget: "600" },
+  render: function (r, m) {
+    var rows = [["Real total hours", r.totalHours + " h"], ["Communication / revisions", r.commHours + " / " + r.revHours + " h"],
+      ["Price before fees", m(r.net)], ["Platform fee + tax", m(r.platformCut)], ["Deposit " + r.depositPct + "%", m(r.deposit)],
+      ["Extra revision round", m(r.perRevision)], ["Effective hourly after fees", m(r.effectiveHourly)]];
+    if (r.budgetVerdict) {
+      var v = { ok: ["Accept", "pos"], negotiate: ["Negotiate scope", ""], reject: ["Decline", "neg"] }[r.budgetVerdict];
+      rows.push(["Client budget verdict", v[0], v[1]], ["Your hourly at that budget", m(r.budgetHourly), r.budgetHourly < r.minRate ? "neg" : "pos"]);
+    }
+    return { big: "Quote " + m(r.quoteRounded), sub: "Walk-away floor " + m(r.floor), rows: rows };
+  }
+};
+</script>
+<script src="../assets/calc-app.js"></script>
+<script>Site.init();</script>
+</body>
+</html>
