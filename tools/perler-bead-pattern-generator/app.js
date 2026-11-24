@@ -78,7 +78,7 @@
       x.textAlign = "left"; x.fillStyle = "#37474f";
       x.fillText(w + "×" + h + " beads · " + res.counts.length + " colors · " + res.total + " beads total", 8, h * cs + fh / 2);
       x.textAlign = "right"; x.fillStyle = "#90a4ae";
-      x.fillText("Free Perler Bead Pattern Generator · finalxcode.github.io/tools", cv.width - 8, h * cs + fh / 2);
+      x.fillText("Free Perler Bead Pattern Generator · solosaas.top", cv.width - 8, h * cs + fh / 2);
     }
   }
   function kv(a, b) { return '<div class="kv"><span>' + esc(a) + "</span><b>" + esc(b) + "</b></div>"; }
