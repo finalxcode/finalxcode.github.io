@@ -9,7 +9,7 @@
     supportUrl: "",       // Gumroad / Ko-fi / Buy Me a Coffee link
     supportLabel: "Support this free tool",
     productUrl: "",       // Checkout link for the Skills Pack; empty keeps the buy button hidden
-    supportEmail: "finalxcode@gmail.com",
+    supportEmail: "support@solosaas.top",
     year: new Date().getFullYear()
   };
 
